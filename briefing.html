@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Briefing – localoutput.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d0d0d;
+      --surface:     #161616;
+      --surface-2:   #1f1f1f;
+      --border:      #262626;
+      --border-2:    #333;
+      --text:        #f0f0f0;
+      --text-muted:  #888;
+      --text-dim:    #555;
+      --accent:      #ffffff;
+      --radius:      10px;
+      --radius-sm:   6px;
+      --font:        'DM Sans', system-ui, sans-serif;
+      --transition:  0.2s ease;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    input, textarea, select, button { font-family: inherit; }
+    button { cursor: pointer; }
+
+    /* ── App Shell ────────────────────────────────────────────────────────── */
+    #app {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── Header ──────────────────────────────────────────────────────────── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      padding: 20px 0 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .logo span { color: var(--text); }
+
+    .progress-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 2px;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+      width: 16.66%;
+    }
+
+    .step-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Steps ───────────────────────────────────────────────────────────── */
+    .step {
+      display: none;
+      animation: fadeIn .3s ease;
+    }
+
+    .step.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Step Header ─────────────────────────────────────────────────────── */
+    .step-header {
+      margin-bottom: 40px;
+    }
+
+    .step-badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .step-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Fields ──────────────────────────────────────────────────────────── */
+    .fields { display: flex; flex-direction: column; gap: 28px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .req { color: #fff; }
+
+    .optional {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 15px;
+      padding: 13px 16px;
+      transition: border-color var(--transition);
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: #fff;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="tel"]::placeholder,
+    textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    textarea { resize: vertical; min-height: 96px; }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      opacity: 0.4;
+    }
+
+    /* ── Chips ───────────────────────────────────────────────────────────── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+
+    .chip:hover { border-color: var(--border-2); color: var(--text); }
+
+    .chip.active {
+      border-color: #fff;
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+    }
+
+    /* ── Toggle Group ────────────────────────────────────────────────────── */
+    .toggle-group {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .toggle-btn {
+      padding: 9px 22px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: calc(var(--radius) - 2px);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .toggle-btn.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    /* ── Step Nav ────────────────────────────────────────────────────────── */
+    .step-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-primary {
+      padding: 14px 28px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity var(--transition), transform var(--transition);
+      letter-spacing: 0.2px;
+    }
+
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); opacity: 1; }
+
+    .btn-secondary {
+      padding: 14px 20px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .btn-secondary:hover { border-color: var(--border-2); color: var(--text); }
+
+    .btn-submit {
+      padding: 16px 36px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: opacity var(--transition), transform var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-submit:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    /* ── Error ───────────────────────────────────────────────────────────── */
+    .error-msg {
+      font-size: 13px;
+      color: #f87171;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .field.has-error input,
+    .field.has-error textarea {
+      border-color: #f87171;
+    }
+
+    .field.has-error .error-msg { display: block; }
+
+    /* ── Step 2: Layout ──────────────────────────────────────────────────── */
+    .step2-layout {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .style-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 0 0 280px;
+      max-height: 540px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #2a2a2a transparent;
+      padding-right: 6px;
+    }
+
+    .style-cards::-webkit-scrollbar { width: 4px; }
+    .style-cards::-webkit-scrollbar-track { background: transparent; }
+    .style-cards::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+    .style-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      background: var(--surface);
+    }
+
+    .style-card:hover { border-color: var(--border-2); }
+
+    .style-card.selected {
+      border-color: #fff;
+      background: var(--surface-2);
+    }
+
+    .style-card-swatch {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .style-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .style-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── Style Preview Panel ─────────────────────────────────────────────── */
+    .preview-wrap {
+      flex: 1;
+      position: sticky;
+      top: 100px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .preview-browser {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .preview-empty {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .prev-inner {
+      width: 100%;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .prev-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+    }
+
+    .prev-logo {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .prev-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+    }
+
+    .prev-nav-btn {
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .prev-hero {
+      padding: 40px 28px 52px;
+    }
+
+    .prev-h1 {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .prev-sub {
+      font-size: 15px;
+      margin-bottom: 28px;
+      opacity: 0.65;
+    }
+
+    .prev-cta {
+      display: inline-block;
+      padding: 11px 24px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Step 3: Sections Grid ───────────────────────────────────────────── */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .section-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      user-select: none;
+    }
+
+    .section-item:hover:not(.locked) { border-color: var(--border-2); }
+
+    .section-item.checked {
+      border-color: rgba(255,255,255,0.3);
+      background: var(--surface-2);
+    }
+
+    .section-item.locked {
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    .section-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .section-item.checked .section-check {
+      background: #fff;
+      border-color: #fff;
+    }
+
+    .section-check svg { display: none; }
+    .section-item.checked .section-check svg { display: block; }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .lock-badge {
+      font-size: 10px;
+      color: var(--text-dim);
+      padding: 2px 7px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+    }
+
+    /* ── Section Tooltips ────────────────────────────────────────────────── */
+    .tooltip-wrap {
+      position: relative;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    .tooltip-icon {
+      font-size: 14px;
+      color: #666;
+      cursor: default;
+      line-height: 1;
+      display: block;
+      padding: 2px;
+    }
+
+    .tooltip-box {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 8px);
+      background: #1e1e1e;
+      color: #fff;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      max-width: 220px;
+      width: max-content;
+      padding: 8px 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: normal;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 20;
+    }
+
+    .tooltip-wrap:hover .tooltip-box { opacity: 1; }
+
+    /* ── Step 4: Services Table ──────────────────────────────────────────── */
+    .services-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+    }
+
+    .services-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 10px 12px;
+    }
+
+    .services-table th:first-child { padding-left: 0; }
+
+    .service-row td {
+      padding: 5px 10px;
+      vertical-align: middle;
+    }
+
+    .service-row td:first-child { padding-left: 0; }
+
+    .service-row input {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 14px;
+      padding: 10px 12px;
+      width: 100%;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .service-row input:focus { border-color: #fff; }
+
+    .service-row input::placeholder { color: var(--text-dim); }
+
+    .btn-remove-row {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      border-radius: 6px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .btn-remove-row:hover { color: #f87171; background: rgba(248,113,113,0.08); }
+
+    .btn-add-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 16px;
+      background: transparent;
+      border: 1.5px dashed var(--border-2);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      transition: border-color var(--transition), color var(--transition);
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .btn-add-row:hover { border-color: #fff; color: #fff; }
+
+    /* ── Opening Hours ────────────────────────────────────────────────────── */
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .hours-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hours-day {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      width: 88px;
+      flex-shrink: 0;
+    }
+
+    .hours-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .hours-row input:focus { border-color: #fff; }
+    .hours-row input::placeholder { color: var(--text-dim); }
+
+    /* ── Step 5: Feature Toggles ─────────────────────────────────────────── */
+    .feature-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .feature-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: border-color var(--transition);
+      gap: 16px;
+    }
+
+    .feature-row:hover { border-color: var(--border-2); }
+
+    .feature-info { flex: 1; }
+
+    .feature-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .feature-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* CSS toggle switch */
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input { display: none; }
+
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      background: var(--border-2);
+      border-radius: 13px;
+      transition: background .2s;
+    }
+
+    .switch-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+    }
+
+    input:checked + .switch-track { background: rgba(255,255,255,0.25); }
+    input:checked ~ .switch-thumb { transform: translateX(20px); }
+
+    /* ── Success Screen ───────────────────────────────────────────────────── */
+    #success-screen {
+      display: none;
+      text-align: center;
+      padding: 80px 20px;
+      animation: fadeIn .4s ease;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+
+    #success-screen h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    #success-screen p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* ── Spinner ──────────────────────────────────────────────────────────── */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,0,0,.2);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .step2-layout { flex-direction: column; }
+      .style-cards { flex: none; flex-direction: row; flex-wrap: wrap; max-height: none; overflow-y: visible; padding-right: 0; }
+      .style-card { flex: 1 1 calc(50% - 6px); min-width: 140px; }
+      .preview-wrap { position: static; width: 100%; }
+      .sections-grid { grid-template-columns: 1fr; }
+      .hours-grid { grid-template-columns: 1fr; }
+      .step-header h1 { font-size: 22px; }
+      .services-table th:nth-child(3), .service-row td:nth-child(3) { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .style-card { flex: 1 1 100%; }
+      .header-inner { gap: 14px; }
+      .logo { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">local<span>output</span></div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="step-label">Schritt <span id="step-num">1</span> von 6</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── STEP 1: Unternehmen ─────────────────────────────────────────── -->
+    <div class="step active" id="step-1">
+      <div class="step-header">
+        <div class="step-badge">01 / 06</div>
+        <h1>Dein Unternehmen</h1>
+        <p class="step-desc">Erzähl uns kurz von deinem Business — alles, was wir für deine Website brauchen.</p>
+      </div>
+
+      <div class="fields">
+
+        <div class="field" id="field-companyName">
+          <label>Unternehmensname <span class="req">*</span></label>
+          <input type="text" id="companyName" placeholder="z.B. Studio Barba" autocomplete="organization">
+          <div class="error-msg">Bitte gib deinen Unternehmensnamen ein.</div>
+        </div>
+
+        <div class="field">
+          <label>Branche <span class="req">*</span></label>
+          <div class="chips" id="industry-chips">
+            <button class="chip active" data-value="Barbershop">Barbershop</button>
+            <button class="chip" data-value="Friseursalon">Friseursalon</button>
+            <button class="chip" data-value="Nagelstudio">Nagelstudio</button>
+            <button class="chip" data-value="Sonstiges">Sonstiges</button>
+          </div>
+        </div>
+
+        <div class="field" id="field-city">
+          <label>Stadt <span class="req">*</span></label>
+          <input type="text" id="city" placeholder="z.B. München" autocomplete="address-level2">
+          <div class="error-msg">Bitte gib deine Stadt ein.</div>
+        </div>
+
+        <div class="field">
+          <label>Was macht euch besonders? <span class="optional">optional</span></label>
+          <textarea id="special" placeholder="z.B. 10 Jahre Erfahrung, spezialisiert auf Fades, familiäre Atmosphäre …" rows="3"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Gibt es schon eine Website?</label>
+          <div class="toggle-group" id="website-toggle">
+            <button class="toggle-btn active" data-value="false">Nein</button>
+            <button class="toggle-btn" data-value="true">Ja</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Designstil ──────────────────────────────────────────── -->
+    <div class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-badge">02 / 06</div>
+        <h1>Dein Designstil</h1>
+        <p class="step-desc">Wähle den Stil, der am besten zu dir und deinem Business passt.</p>
+      </div>
+
+      <div class="step2-layout">
+
+        <div class="style-cards" id="style-cards">
+          <!-- populated by initStyleCards() -->
+        </div>
+
+        <div class="preview-wrap">
+          <div class="preview-label">Live-Vorschau</div>
+          <div class="preview-browser" id="preview-browser">
+            <div class="preview-empty">← Stil auswählen</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="field" style="margin-top: 28px;">
+        <label>Referenz-Websites <span class="optional">optional</span></label>
+        <textarea id="referenceLinks" placeholder="Welche Websites gefallen dir? Eine URL pro Zeile.&#10;z.B. https://barber-palace.de" style="min-height: 80px;"></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Sections ────────────────────────────────────────────── -->
+    <div class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-badge">03 / 06</div>
+        <h1>Was kommt auf die Website?</h1>
+        <p class="step-desc">Wähle alle Bereiche, die auf deiner neuen Website erscheinen sollen.</p>
+      </div>
+
+      <div class="sections-grid" id="sections-grid">
+        <!-- rendered by JS -->
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Inhalte ─────────────────────────────────────────────── -->
+    <div class="step" id="step-4">
+      <div class="step-header">
+        <div class="step-badge">04 / 06</div>
+        <h1>Deine Inhalte</h1>
+        <p class="step-desc">Leistungen, Öffnungszeiten und Kontaktdaten — das Herzstück deiner Website.</p>
+      </div>
+
+      <div class="fields">
+
+        <!-- Services -->
+        <div class="field">
+          <label>Leistungen &amp; Preise</label>
+          <table class="services-table">
+            <thead>
+              <tr>
+                <th style="width:48%">Leistungsname</th>
+                <th style="width:22%">Preis (€)</th>
+                <th style="width:22%">Dauer (Min)</th>
+                <th style="width:8%"></th>
+              </tr>
+            </thead>
+            <tbody id="services-body">
+              <!-- rendered by JS -->
+            </tbody>
+          </table>
+          <button class="btn-add-row" onclick="addServiceRow()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            Leistung hinzufügen
+          </button>
+        </div>
+
+        <!-- Opening hours -->
+        <div class="field">
+          <label>Öffnungszeiten</label>
+          <div class="hours-grid" id="hours-grid">
+            <!-- rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="field">
+          <label>Telefonnummer</label>
+          <input type="tel" id="phone" placeholder="+49 89 123 456 78" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label>E-Mail-Adresse <span class="optional">deines Unternehmens</span></label>
+          <input type="email" id="clientEmail" placeholder="info@mein-salon.de" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label>Adresse</label>
+          <input type="text" id="address" placeholder="Musterstraße 12, 80331 München" autocomplete="street-address">
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 5: Features ────────────────────────────────────────────── -->
+    <div class="step" id="step-5">
+      <div class="step-header">
+        <div class="step-badge">05 / 06</div>
+        <h1>Extra-Features</h1>
+        <p class="step-desc">Welche zusätzlichen Funktionen soll deine Website haben?</p>
+      </div>
+
+      <div class="feature-list">
+
+        <label class="feature-row" for="feat-booking">
+          <div class="feature-info">
+            <div class="feature-name">Online-Terminbuchung</div>
+            <div class="feature-sub">Kunden buchen direkt über die Website</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="feat-booking">
+            <div class="switch-track"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </label>
+
+        <label class="feature-row" for="feat-whatsapp">
+          <div class="feature-info">
+            <div class="feature-name">WhatsApp-Button</div>
+            <div class="feature-sub">Direkter Chat-Button auf der Website</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="feat-whatsapp">
+            <div class="switch-track"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </label>
+
+        <label class="feature-row" for="feat-contact">
+          <div class="feature-info">
+            <div class="feature-name">Kontaktformular</div>
+            <div class="feature-sub">Anfragen direkt über die Website empfangen</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="feat-contact">
+            <div class="switch-track"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </label>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 6: Abschluss ───────────────────────────────────────────── -->
+    <div class="step" id="step-6">
+      <div class="step-header">
+        <div class="step-badge">06 / 06</div>
+        <h1>Fast geschafft!</h1>
+        <p class="step-desc">Noch ein paar letzte Details, dann schicken wir dein Briefing ab.</p>
+      </div>
+
+      <div class="fields">
+
+        <div class="field">
+          <label>Gewünschter Fertigstellungstermin <span class="optional">optional</span></label>
+          <input type="date" id="deadline">
+        </div>
+
+        <div class="field" id="field-contactName">
+          <label>Dein Name <span class="req">*</span></label>
+          <input type="text" id="contactName" placeholder="Max Mustermann" autocomplete="name">
+          <div class="error-msg">Bitte gib deinen Namen ein.</div>
+        </div>
+
+        <div class="field" id="field-contactEmail">
+          <label>E-Mail für Rückmeldung <span class="req">*</span></label>
+          <input type="email" id="contactEmail" placeholder="max@mein-salon.de" autocomplete="email">
+          <div class="error-msg">Bitte gib eine gültige E-Mail-Adresse ein.</div>
+        </div>
+
+        <div class="field">
+          <label>Sonstige Wünsche <span class="optional">optional</span></label>
+          <textarea id="wishes" placeholder="z.B. Sprache, bestimmte Konkurrenten-Websites als Inspiration, absolute Don'ts …" rows="4"></textarea>
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+          <span id="submit-label">Briefing absenden</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="submit-icon">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="submit-error" style="margin-top:16px;color:#f87171;font-size:14px;display:none;text-align:right;"></div>
+    </div>
+
+  </main>
+
+  <!-- ── Success Screen ──────────────────────────────────────────────────── -->
+  <div id="success-screen">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M6 14l5.5 5.5L22 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Briefing erfolgreich abgesendet!</h2>
+    <p>Wir melden uns innerhalb von 24&thinsp;h bei dir. Schau auch in deinen Spam-Ordner, falls du nichts hörst.</p>
+  </div>
+
+</div><!-- #app -->
+
+<script>
+// ── Config ─────────────────────────────────────────────────────────────────────
+// In production: change to your live URL, z.B. https://api.localoutput.com
+const API_URL = 'http://localhost:3001/send-briefing';
+
+// ── State ──────────────────────────────────────────────────────────────────────
+let currentStep = 1;
+const TOTAL_STEPS = 6;
+
+let selectedIndustry = 'Barbershop';
+let hasWebsite = false;
+let selectedStyle = null;
+
+const SECTIONS = [
+  { id: 'hero',     label: 'Hero',                        checked: true,  locked: false, tooltip: 'Das große Startbild deiner Website mit deinem Namen, einem Slogan und einem Buchungs-Button.' },
+  { id: 'services', label: 'Leistungen &amp; Preise',     checked: true,  locked: false, tooltip: 'Zeigt alle deine Angebote mit Preisen — z.B. Haarschnitt 25€, Bart trimmen 15€.' },
+  { id: 'contact',  label: 'Kontakt &amp; Öffnungszeiten',checked: true,  locked: false, tooltip: 'Adresse, Telefon, E-Mail und wann ihr geöffnet habt.' },
+  { id: 'booking',  label: 'Online-Terminbuchung',        checked: false, locked: false, tooltip: 'Kunden können direkt auf der Website einen Termin buchen — ohne anrufen zu müssen.' },
+  { id: 'team',     label: 'Über uns / Team',             checked: false, locked: false, tooltip: 'Kurzer Text über euch, eure Geschichte oder euer Team mit Fotos.' },
+  { id: 'gallery',  label: 'Galerie / Fotos',             checked: false, locked: false, tooltip: 'Bildergalerie mit euren besten Arbeiten oder eurem Laden.' },
+  { id: 'reviews',  label: 'Bewertungen / Kundenstimmen', checked: false, locked: false, tooltip: 'Echte Bewertungen von zufriedenen Kunden — stärkt das Vertrauen.' },
+  { id: 'maps',     label: 'Google Maps',                 checked: false, locked: false, tooltip: 'Eingebettete Karte damit Kunden euch leicht finden.' },
+  { id: 'faq',      label: 'FAQ',                         checked: false, locked: false, tooltip: 'Häufig gestellte Fragen — z.B. zu Preisen, Parken oder Terminen.' },
+  { id: 'legal',    label: 'Impressum &amp; Datenschutz', checked: true,  locked: true,  tooltip: 'Gesetzlich verpflichtend — wird immer automatisch hinzugefügt.' },
+];
+
+const DAYS = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+const DEFAULT_HOURS = {
+  Montag:'09:00 – 18:00', Dienstag:'09:00 – 18:00', Mittwoch:'09:00 – 18:00',
+  Donnerstag:'09:00 – 18:00', Freitag:'09:00 – 18:00',
+  Samstag:'10:00 – 15:00', Sonntag:'Geschlossen'
+};
+
+const STYLES = {
+  modern: {
+    name: 'Modern & Dunkel', desc: 'Schwarz, Gold, serifenlose Schrift',
+    bg: '#111111', navBg: '#1C1C1C', text: '#FFFFFF', sub: 'rgba(255,255,255,0.6)',
+    font: "'Space Grotesk', sans-serif",
+    btnBg: '#C9A84C', btnColor: '#111', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #111111 50%, #C9A84C 50%);',
+    fontId: 'gf-space-grotesk',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap',
+  },
+  clean: {
+    name: 'Clean & Hell', desc: 'Weiß, Grau, minimalistisch',
+    bg: '#FFFFFF', navBg: '#F5F5F5', text: '#1A1A1A', sub: 'rgba(0,0,0,0.5)',
+    font: "'DM Sans', sans-serif",
+    btnBg: '#1A1A1A', btnColor: '#FFFFFF', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #FFFFFF 50%, #F5F5F5 50%); border: 1px solid #e0e0e0;',
+    fontId: 'gf-dm-sans',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap',
+  },
+  rustic: {
+    name: 'Warm & Rustikal', desc: 'Brauntöne, Creme, Vintage Schrift',
+    bg: '#F5E6C8', navBg: '#EDD9B0', text: '#2C1E0F', sub: 'rgba(44,30,15,0.6)',
+    font: "'Playfair Display', serif",
+    btnBg: '#2C1E0F', btnColor: '#F5E6C8', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #F5E6C8 50%, #2C1E0F 50%);',
+    fontId: 'gf-playfair',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap',
+  },
+  luxury: {
+    name: 'Luxus & Premium', desc: 'Schwarz, Creme, edle dünne Schrift',
+    bg: '#0A0A0A', navBg: '#111111', text: '#C4A86A', sub: 'rgba(196,168,106,0.5)',
+    font: "'Cormorant Garamond', serif",
+    btnBg: 'transparent', btnColor: '#C4A86A', btnBorder: '1px solid #C4A86A',
+    swatchStyle: 'background: linear-gradient(90deg, #0A0A0A 50%, #C4A86A 50%);',
+    fontId: 'gf-cormorant',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap',
+  },
+  bold: {
+    name: 'Bold & Farbenfroh', desc: 'Lila, Pink, energetische Schrift',
+    bg: '#6C3FFF', navBg: '#5A2DE8', text: '#FFFFFF', sub: 'rgba(255,255,255,0.7)',
+    font: "'Syne', sans-serif",
+    btnBg: '#FF3C6F', btnColor: '#FFFFFF', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #6C3FFF 50%, #FF3C6F 50%);',
+    fontId: 'gf-syne',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap',
+  },
+  mediterran: {
+    name: 'Mediterran', desc: 'Weiß, Blau, Olivgrün, leicht',
+    bg: '#FAFAFA', navBg: '#FFFFFF', text: '#1A4F8A', sub: 'rgba(26,79,138,0.55)',
+    font: "'Lato', sans-serif",
+    btnBg: '#4A7C59', btnColor: '#FFFFFF', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #1A4F8A 50%, #4A7C59 50%);',
+    fontId: 'gf-lato',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap',
+  },
+  industrial: {
+    name: 'Industrial', desc: 'Dunkelgrau, Stahlgrau, kompakt',
+    bg: '#1C1C1C', navBg: '#141414', text: '#E0E0E0', sub: 'rgba(224,224,224,0.5)',
+    font: "'Barlow Condensed', sans-serif",
+    btnBg: 'transparent', btnColor: '#8A8A8A', btnBorder: '1px solid #8A8A8A',
+    swatchStyle: 'background: linear-gradient(90deg, #1C1C1C 50%, #8A8A8A 50%);',
+    fontId: 'gf-barlow',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&display=swap',
+  },
+  feminin: {
+    name: 'Soft & Feminin', desc: 'Rosa, Creme, Altrosa, sanft',
+    bg: '#FFF8F0', navBg: '#F9E4EC', text: '#3D1A24', sub: 'rgba(61,26,36,0.55)',
+    font: "'Nunito', sans-serif",
+    btnBg: '#C4788A', btnColor: '#FFF8F0', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #F9E4EC 50%, #C4788A 50%);',
+    fontId: 'gf-nunito',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap',
+  },
+  streetwear: {
+    name: 'Streetwear', desc: 'Schwarz, Neongrün, bold',
+    bg: '#000000', navBg: '#0A0A0A', text: '#FFFFFF', sub: 'rgba(255,255,255,0.6)',
+    font: "'Bebas Neue', cursive",
+    btnBg: '#39FF14', btnColor: '#000000', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #000000 50%, #39FF14 50%);',
+    fontId: 'gf-bebas',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap',
+  },
+  classic: {
+    name: 'Classic & Traditionell', desc: 'Beige, Dunkelgrün, Serif',
+    bg: '#F0E8D8', navBg: '#E6DCC8', text: '#2D4A35', sub: 'rgba(45,74,53,0.55)',
+    font: "'Merriweather', serif",
+    btnBg: '#2D4A35', btnColor: '#F0E8D8', btnBorder: 'none',
+    swatchStyle: 'background: linear-gradient(90deg, #F0E8D8 50%, #2D4A35 50%);',
+    fontId: 'gf-merriweather',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap',
+  },
+};
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initStyleCards();
+  initChips();
+  initWebsiteToggle();
+  initSectionsGrid();
+  initServicesTable();
+  initHoursGrid();
+  updateProgress();
+});
+
+// ── Progress ───────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const pct = (currentStep / TOTAL_STEPS) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('step-num').textContent = currentStep;
+}
+
+// ── Step Navigation ────────────────────────────────────────────────────────────
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  currentStep = n;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep() {
+  if (currentStep > 1) showStep(currentStep - 1);
+}
+
+function nextStep() {
+  if (!validateStep(currentStep)) return;
+  if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
+}
+
+// ── Validation ─────────────────────────────────────────────────────────────────
+function validateStep(step) {
+  if (step === 1) {
+    let ok = true;
+    const name = document.getElementById('companyName').value.trim();
+    const city = document.getElementById('city').value.trim();
+    setFieldError('field-companyName', !name);
+    setFieldError('field-city', !city);
+    if (!name || !city) ok = false;
+    return ok;
+  }
+  if (step === 2) {
+    if (!selectedStyle) {
+      // gentle hint, no hard block
+      const cards = document.getElementById('style-cards');
+      cards.style.outline = '1.5px solid #f87171';
+      cards.style.borderRadius = '10px';
+      setTimeout(() => { cards.style.outline = ''; }, 1200);
+    }
+    // allow continuing without a style
+    return true;
+  }
+  if (step === 6) {
+    let ok = true;
+    const name  = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setFieldError('field-contactName', !name);
+    setFieldError('field-contactEmail', !email || !emailOk);
+    if (!name || !email || !emailOk) ok = false;
+    return ok;
+  }
+  return true;
+}
+
+function setFieldError(fieldId, hasError) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  el.classList.toggle('has-error', hasError);
+}
+
+// ── Step 1: Chips & Toggle ─────────────────────────────────────────────────────
+function initChips() {
+  document.getElementById('industry-chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('#industry-chips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedIndustry = chip.dataset.value;
+  });
+}
+
+function initWebsiteToggle() {
+  document.getElementById('website-toggle').addEventListener('click', e => {
+    const btn = e.target.closest('.toggle-btn');
+    if (!btn) return;
+    document.querySelectorAll('#website-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    hasWebsite = btn.dataset.value === 'true';
+  });
+}
+
+// ── Step 2: Style Cards (generated from STYLES) ────────────────────────────────
+function initStyleCards() {
+  const container = document.getElementById('style-cards');
+  Object.entries(STYLES).forEach(([key, s]) => {
+    const card = document.createElement('div');
+    card.className = 'style-card';
+    card.dataset.style = key;
+    card.onclick = () => selectStyle(key);
+    card.innerHTML = `
+      <div class="style-card-swatch" style="${s.swatchStyle}"></div>
+      <div>
+        <div class="style-card-name">${s.name}</div>
+        <div class="style-card-desc">${s.desc}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function loadFont(id, url) {
+  if (document.getElementById(id)) return;
+  const link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = url;
+  document.head.appendChild(link);
+}
+
+// ── Step 2: Style Selection & Preview ──────────────────────────────────────────
+function selectStyle(key) {
+  selectedStyle = key;
+  loadFont(STYLES[key].fontId, STYLES[key].fontUrl);
+  document.querySelectorAll('.style-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.style === key);
+  });
+  renderPreview(key);
+}
+
+function renderPreview(key) {
+  const s = STYLES[key];
+  const companyName = document.getElementById('companyName').value.trim() || 'Dein Studio';
+  const browser = document.getElementById('preview-browser');
+
+  browser.style.background = s.bg;
+
+  browser.innerHTML = `
+    <div class="prev-inner" style="font-family: ${s.font};">
+      <div class="prev-nav" style="background: ${s.navBg}; border-bottom: 1px solid rgba(128,128,128,0.15);">
+        <span class="prev-logo" style="color: ${s.text}; font-family: ${s.font};">${companyName}</span>
+        <div class="prev-links" style="color: ${s.text}; opacity: 0.7;">
+          <span>Leistungen</span>
+          <span>Kontakt</span>
+          <span class="prev-nav-btn" style="background: ${s.btnBg}; color: ${s.btnColor}; border: ${s.btnBorder}; font-family: ${s.font};">Termin buchen</span>
+        </div>
+      </div>
+      <div class="prev-hero">
+        <div class="prev-h1" style="color: ${s.text}; font-family: ${s.font};">${companyName}</div>
+        <div class="prev-sub" style="color: ${s.sub}; font-family: ${s.font};">Dein Termin, dein Style.</div>
+        <div class="prev-cta" style="background: ${s.btnBg}; color: ${s.btnColor}; border: ${s.btnBorder}; font-family: ${s.font};">Jetzt Termin buchen</div>
+      </div>
+    </div>`;
+}
+
+// Refresh preview name when user types in step 1
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('companyName').addEventListener('input', () => {
+    if (selectedStyle) renderPreview(selectedStyle);
+  });
+});
+
+// ── Step 3: Sections Grid ──────────────────────────────────────────────────────
+function initSectionsGrid() {
+  const grid = document.getElementById('sections-grid');
+  SECTIONS.forEach(sec => {
+    const el = document.createElement('div');
+    el.className = 'section-item' + (sec.checked ? ' checked' : '') + (sec.locked ? ' locked' : '');
+    el.dataset.id = sec.id;
+    el.innerHTML = `
+      <div class="section-check">
+        <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+          <path d="M1 4.5L4 7.5L10 1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="section-label">${sec.label}</span>
+      ${sec.locked ? '<span class="lock-badge">Pflicht</span>' : ''}
+      <div class="tooltip-wrap">
+        <span class="tooltip-icon">ⓘ</span>
+        <div class="tooltip-box">${sec.tooltip}</div>
+      </div>
+    `;
+    if (!sec.locked) {
+      el.addEventListener('click', e => {
+        if (e.target.closest('.tooltip-wrap')) return;
+        el.classList.toggle('checked');
+        sec.checked = el.classList.contains('checked');
+      });
+    }
+    grid.appendChild(el);
+  });
+}
+
+// ── Step 4: Services Table ─────────────────────────────────────────────────────
+function initServicesTable() {
+  const tbody = document.getElementById('services-body');
+  tbody.innerHTML = '';
+  addServiceRowData('Haarschnitt', '25', '30');
+}
+
+function addServiceRow() {
+  addServiceRowData('', '', '');
+}
+
+function addServiceRowData(name, price, duration) {
+  const tbody = document.getElementById('services-body');
+  const tr = document.createElement('tr');
+  tr.className = 'service-row';
+  tr.innerHTML = `
+    <td><input type="text"   placeholder="Leistungsname" value="${name}"></td>
+    <td><input type="number" placeholder="25" min="0" step="0.5" value="${price}" style="max-width:100%"></td>
+    <td><input type="number" placeholder="30" min="0" step="5"   value="${duration}" style="max-width:100%"></td>
+    <td>
+      <button class="btn-remove-row" onclick="removeServiceRow(this)" title="Zeile entfernen">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </td>
+  `;
+  tbody.appendChild(tr);
+  tr.querySelector('input').focus();
+}
+
+function removeServiceRow(btn) {
+  const row = btn.closest('tr');
+  if (document.querySelectorAll('.service-row').length > 1) row.remove();
+}
+
+// ── Step 4: Hours Grid ─────────────────────────────────────────────────────────
+function initHoursGrid() {
+  const grid = document.getElementById('hours-grid');
+  DAYS.forEach(day => {
+    const row = document.createElement('div');
+    row.className = 'hours-row';
+    row.innerHTML = `
+      <span class="hours-day">${day}</span>
+      <input type="text" id="hours-${day}" placeholder="Geschlossen" value="${DEFAULT_HOURS[day] || ''}">
+    `;
+    grid.appendChild(row);
+  });
+}
+
+// ── Collect Form Data ──────────────────────────────────────────────────────────
+function collectFormData() {
+  const services = [];
+  document.querySelectorAll('.service-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const name = inputs[0].value.trim();
+    if (name) {
+      services.push({ name, price: inputs[1].value.trim(), duration: inputs[2].value.trim() });
+    }
+  });
+
+  const openingHours = {};
+  DAYS.forEach(day => {
+    const val = document.getElementById('hours-' + day)?.value.trim();
+    openingHours[day] = val || 'Geschlossen';
+  });
+
+  const sections = SECTIONS.filter(s => s.checked).map(s =>
+    s.label.replace(/&amp;/g, '&')
+  );
+
+  return {
+    // Block 1
+    companyName: document.getElementById('companyName').value.trim(),
+    industry:    selectedIndustry,
+    city:        document.getElementById('city').value.trim(),
+    special:     document.getElementById('special').value.trim(),
+    hasWebsite,
+    // Block 2
+    style: selectedStyle ? STYLES[selectedStyle].name : '(nicht gewählt)',
+    referenceLinks: document.getElementById('referenceLinks')?.value.trim() || '',
+    // Block 3
+    sections,
+    // Block 4
+    services,
+    openingHours,
+    phone:       document.getElementById('phone').value.trim(),
+    clientEmail: document.getElementById('clientEmail').value.trim(),
+    address:     document.getElementById('address').value.trim(),
+    // Block 5
+    features: {
+      booking:     document.getElementById('feat-booking').checked,
+      whatsapp:    document.getElementById('feat-whatsapp').checked,
+      contactForm: document.getElementById('feat-contact').checked,
+    },
+    // Block 6
+    deadline:     document.getElementById('deadline').value,
+    contactName:  document.getElementById('contactName').value.trim(),
+    contactEmail: document.getElementById('contactEmail').value.trim(),
+    wishes:       document.getElementById('wishes').value.trim(),
+  };
+}
+
+// ── Submit ─────────────────────────────────────────────────────────────────────
+async function submitForm() {
+  if (!validateStep(6)) return;
+
+  const btn = document.getElementById('btn-submit');
+  const label = document.getElementById('submit-label');
+  const icon  = document.getElementById('submit-icon');
+  const errEl = document.getElementById('submit-error');
+
+  btn.disabled = true;
+  label.textContent = 'Wird gesendet …';
+  icon.innerHTML = '<div class="spinner"></div>';
+  errEl.style.display = 'none';
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(collectFormData()),
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || !data.success) throw new Error(data.error || 'Unbekannter Fehler');
+
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    btn.disabled = false;
+    label.textContent = 'Briefing absenden';
+    icon.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+    errEl.textContent = 'Fehler: ' + err.message + ' – Bitte versuche es erneut oder melde dich direkt bei hallo@localoutput.com.';
+    errEl.style.display = 'block';
+  }
+}
+</script>
+
+</body>
+</html>
